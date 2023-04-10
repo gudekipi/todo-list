@@ -1,4 +1,4 @@
-"""mysite URL Configuration
+"""lawadvisor URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -14,8 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+from registration.views import register
+from login.views import login_user, logout_user
+from todo.views import TodoViewSet
+
+
+router = routers.DefaultRouter()
+router.register(r'todos', TodoViewSet, basename='todo')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('register/', register, name='register'),
+    path('login/', login_user, name='login'),
+    path('logout/', logout_user, name='logout'),
+    path('todos/', include(router.urls), name='todos'),
 ]
+
+
